@@ -45,7 +45,7 @@ function App() {
   });
 
   function onSubmit() {
-    axios.post("http://localhost:8080/", data, {
+    axios.post("https://goodlife-autobook-server.herokuapp.com/", data, {
       headers: { "Content-Type": "application/json" },
     });
   }
