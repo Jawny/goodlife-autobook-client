@@ -7,8 +7,8 @@ const axios = require("axios");
 function App() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [year, setYear] = useState("");
-  const [month, setMonth] = useState("");
+  // const [year, setYear] = useState("");
+  // const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
   const [hour, setHour] = useState("");
 
@@ -20,17 +20,17 @@ function App() {
     setPassword(e.target.value);
   }
 
-  function handleYear(e) {
-    setYear(e.target.value);
-  }
+  // function handleYear(e) {
+  //   setYear(e.target.value);
+  // }
 
-  function handleMonth(e) {
-    setMonth(e.target.value);
-  }
+  // function handleMonth(e) {
+  //   setMonth(e.target.value);
+  // }
 
-  function handleDay(e) {
-    setDay(e.target.value);
-  }
+  // function handleDay(e) {
+  //   setDay(e.target.value);
+  // }
 
   function handleHour(e) {
     setHour(e.target.value);
