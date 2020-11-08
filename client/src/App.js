@@ -38,9 +38,9 @@ function App() {
   let data = JSON.stringify({
     username,
     password,
-    year,
-    month,
-    day,
+    // year,
+    // month,
+    // day,
     hour,
   });
 
@@ -54,9 +54,9 @@ function App() {
     <div className="App">
       <input type="email" placeholder="username" onChange={handleUsername} />
       <input type="password" placeholder="password" onChange={handlePassword} />
-      <input type="text" placeholder="Year" onChange={handleYear} />
+      {/* <input type="text" placeholder="Year" onChange={handleYear} />
       <input type="text" placeholder="Month" onChange={handleMonth} />
-      <input type="text" placeholder="Day" onChange={handleDay} />
+      <input type="text" placeholder="Day" onChange={handleDay} /> */}
       <input type="text" placeholder="Hour" onChange={handleHour} />
       <Button onClick={onSubmit}>Submit</Button>
     </div>
