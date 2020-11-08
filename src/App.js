@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, notification } from "antd";
 import React, { useState } from "react";
 import { Select } from "antd";
 import "antd/dist/antd.css";
@@ -7,7 +7,7 @@ import "./App.css";
 const axios = require("axios");
 
 function App() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [monday, setMonday] = useState(0);
   const [tuesday, setTuesday] = useState(0);
@@ -47,8 +47,8 @@ function App() {
     { value: 18, text: "7:00PM - 8:00PM" },
   ];
 
-  function handleUsername(e) {
-    setUsername(e.target.value);
+  function handleEmail(e) {
+    setEmail(e.target.value);
   }
 
   function handlePassword(e) {
@@ -90,7 +90,7 @@ function App() {
     console.log(e);
   }
   let data = JSON.stringify({
-    username,
+    email,
     password,
     monday,
     tuesday,
@@ -101,7 +101,15 @@ function App() {
     sunday,
   });
 
+  const openNotification = () => {
+    notification.open({
+      message: "Registration Confirmed",
+      description: "You are signed up for auto bookings",
+    });
+  };
+
   function onSubmit() {
+    openNotification();
     axios.post("https://goodlife-autobook-server.herokuapp.com/", data, {
       headers: { "Content-Type": "application/json" },
     });
@@ -109,7 +117,7 @@ function App() {
 
   return (
     <div className="App">
-      <input type="email" placeholder="username" onChange={handleUsername} />
+      <input type="email" placeholder="username" onChange={handleEmail} />
       <input type="password" placeholder="password" onChange={handlePassword} />
       <div>
         <h2>Monday</h2>
