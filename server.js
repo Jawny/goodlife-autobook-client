@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 // require("dotenv").config({ path: "../.env" });
 
 mongoose.connect(
-  `mongodb+srv://thatbawss:${process.env.MONGO_PASSWORD}@cluster0.kqhf8.mongodb.net/goodlife?retryWrites=true&w=majority`,
+  `mongodb+srv://thatbawss:7Hz4wD7ZYrDxUn67@cluster0.kqhf8.mongodb.net/goodlife?retryWrites=true&w=majority`,
   { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
 );
 
