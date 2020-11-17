@@ -37,52 +37,74 @@ function App() {
     );
     bookingTimeIntervalsCopy[day] = value;
     setBookingTimeIntervals(bookingTimeIntervalsCopy);
-    console.log(bookingTimeIntervals);
   }
 
-  let data = JSON.stringify({
-    email,
-    password,
-  });
-
-  const openNotification = () => {
-    notification.open({
-      message: "Registration Confirmed",
-      description: "You are signed up for auto bookings",
-    });
+  const openNotification = (result) => {
+    if (result) {
+      notification.open({
+        message: "REGISTRATION CONFIRMED",
+        description: "YOU ARE SIGNED UP FOR AUTO BOOKINGS",
+      });
+    } else {
+      notification.open({
+        message: "REGISTRATION FAILED",
+        description: "PLEASE CHECK CREDENTIALS AGAIN",
+      });
+    }
   };
 
-  function onSubmit() {
-    openNotification();
-    axios.post("https://goodlife-autobook-server.herokuapp.com/", data, {
-      headers: { "Content-Type": "application/json" },
+  const formatData = () => {
+    const data = JSON.stringify({
+      email,
+      password,
+      monday: bookingTimeIntervals[0],
+      tuesday: bookingTimeIntervals[1],
+      wednesday: bookingTimeIntervals[2],
+      thursday: bookingTimeIntervals[3],
+      friday: bookingTimeIntervals[4],
+      saturday: bookingTimeIntervals[5],
+      sunday: bookingTimeIntervals[6],
     });
-  }
+    return data;
+  };
+
+  const onSubmit = async () => {
+    const data = formatData();
+    const result = await axios.post(
+      "https://goodlife-autobook-server.herokuapp.com/",
+      data,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    openNotification(result.data);
+    console.log(result.data);
+  };
 
   // local
-  function onSubmit(e) {
-    openNotification();
-    console.log(e);
-    // axios.post("http://localhost:8000/", data, {
-    //   headers: { "Content-Type": "application/json" },
-    // });
-  }
+  // const onSubmit = async () => {
+  //   const data = formatData();
+  //   console.log(bookingTimeIntervals);
+  //   const res = await axios.post("http://localhost:8000/", data, {
+  //     headers: { "Content-Type": "application/json" },
+  //   });
+  //   openNotification(res.data);
+  //   console.log(res.data);
+  // };
 
   return (
     <div className="App">
       <input type="email" placeholder="username" onChange={handleEmail} />
       <input type="text" placeholder="password" onChange={handlePassword} />
-      <Dropdown
-        listOfDays={listOfDays}
-        onChange={(value) => {
-          handleBookingTimes(value, 0);
-        }}
-      />
+      <div className="dropdown-menus-container">
+        <Dropdown
+          listOfDays={listOfDays}
+          handleBookingTimes={handleBookingTimes}
+        />
+      </div>
       <Button onClick={onSubmit}>Submit</Button>
     </div>
   );
 }
 
 export default App;
-// check user passwords to see if it works and make toast message
-// post request and check if status 200

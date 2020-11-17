@@ -5,7 +5,7 @@ import "antd/dist/antd.css";
 
 function Dropdown(props) {
   const { Option } = Select;
-  const { onChange, listOfDays } = props;
+  const { listOfDays, handleBookingTimes } = props;
 
   const renderOption = (data) => {
     return <Option value={data.value}>{data.text}</Option>;
@@ -15,13 +15,19 @@ function Dropdown(props) {
     return (
       <div>
         <h2>{day.day}</h2>
-        <Select defaultValue="None" onChange={onChange}>
+        <Select
+          style={{ width: 180 }}
+          defaultValue="None"
+          onChange={(value) => {
+            handleBookingTimes(value, day.dayIndex);
+          }}
+        >
           {day.isWeekDay
             ? weekday.map((data) => {
                 return renderOption(data);
               })
             : weekend.map((data) => {
-                return renderOption(data.text);
+                return renderOption(data);
               })}
         </Select>
       </div>

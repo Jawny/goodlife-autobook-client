@@ -28,13 +28,13 @@ const weekend = [
 ];
 
 const listOfDays = [
-  { day: "Monday", isWeekDay: true },
-  { day: "Tuesday", isWeekDay: true },
-  { day: "Wednesday", isWeekDay: true },
-  { day: "Thursday", isWeekDay: true },
-  { day: "Friday", isWeekDay: true },
-  { day: "Saturday", isWeekDay: false },
-  { day: "Sunday", isWeekDay: false },
+  { dayIndex: 0, day: "Monday", isWeekDay: true },
+  { dayIndex: 1, day: "Tuesday", isWeekDay: true },
+  { dayIndex: 2, day: "Wednesday", isWeekDay: true },
+  { dayIndex: 3, day: "Thursday", isWeekDay: true },
+  { dayIndex: 4, day: "Friday", isWeekDay: true },
+  { dayIndex: 5, day: "Saturday", isWeekDay: false },
+  { dayIndex: 6, day: "Sunday", isWeekDay: false },
 ];
 
 module.exports = {
