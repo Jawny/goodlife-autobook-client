@@ -1,71 +1,32 @@
 import React from "react";
+import { weekday, weekend } from "../Constants";
 import { Select } from "antd";
 import "antd/dist/antd.css";
 
 function Dropdown(props) {
-  const weekday = [
-    { value: null, text: "None" },
-    { value: 6, text: "6:00AM - 7:00AM" },
-    { value: 7.5, text: "7:30AM - 8:00AM" },
-    { value: 9, text: "9:00AM - 10:00AM" },
-    { value: 10.5, text: "10:30AM - 11:30AM" },
-    { value: 12, text: "12:00PM - 1:00PM" },
-    { value: 13.5, text: "1:30PM - 2:30PM" },
-    { value: 15, text: "3:00PM - 4:00PM" },
-    { value: 16.5, text: "4:30PM - 5:30PM" },
-    { value: 18, text: "6:00PM - 7:00PM" },
-    { value: 19.5, text: "7:30PM - 8:30PM" },
-    { value: 21, text: "9:00PM - 10:00PM" },
-    { value: 22.5, text: "10:30PM - 11:30PM" },
-  ];
-
-  const weekend = [
-    { value: null, text: "None" },
-    { value: 6, text: "7:00AM - 8:00AM" },
-    { value: 7.5, text: "8:30AM - 9:00AM" },
-    { value: 9, text: "10:00AM - 11:00AM" },
-    { value: 10.5, text: "11:30AM - 12:30PM" },
-    { value: 12, text: "1:00PM - 2:00PM" },
-    { value: 13.5, text: "2:30PM - 3:30PM" },
-    { value: 15, text: "4:00PM - 5:00PM" },
-    { value: 16.5, text: "5:30PM - 6:30PM" },
-    { value: 18, text: "7:00PM - 8:00PM" },
-  ];
-
   const { Option } = Select;
-  const { date, day } = props;
+  const { onChange, listOfDays } = props;
 
-  function handle(e) {
-    console.log("changed");
-  }
-
-  const functionHandler = (e) => {
-    props.passChildData(e.target.value);
+  const renderOption = (data) => {
+    return <Option value={data.value}>{data.text}</Option>;
   };
 
-  return (
-    <div>
-      {date === "weekday" ? (
-        <div>
-          <h2>{day}</h2>
-          <Select defaultValue="None" onChange={functionHandler}>
-            {weekday.map((data) => {
-              return <Option value={data.value}>{data.text}</Option>;
-            })}
-          </Select>
-        </div>
-      ) : (
-        <div>
-          <h2>{day}</h2>
-          <Select defaultValue="None">
-            {weekend.map((data) => {
-              return <Option value={data.value}>{data.text}</Option>;
-            })}
-          </Select>
-        </div>
-      )}
-    </div>
-  );
+  return listOfDays.map((day) => {
+    return (
+      <div>
+        <h2>{day.day}</h2>
+        <Select defaultValue="None" onChange={onChange}>
+          {day.isWeekDay
+            ? weekday.map((data) => {
+                return renderOption(data);
+              })
+            : weekend.map((data) => {
+                return renderOption(data.text);
+              })}
+        </Select>
+      </div>
+    );
+  });
 }
 
 export default Dropdown;
