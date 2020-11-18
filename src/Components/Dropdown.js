@@ -8,7 +8,11 @@ function Dropdown(props) {
   const { listOfDays, handleBookingTimes } = props;
 
   const renderOption = (data) => {
-    return <Option value={data.value}>{data.text}</Option>;
+    return (
+      <Option key={data.value} value={data.value}>
+        {data.text}
+      </Option>
+    );
   };
 
   return listOfDays.map((day) => {
@@ -16,6 +20,7 @@ function Dropdown(props) {
       <div>
         <h2>{day.day}</h2>
         <Select
+          key={day.dayIndex}
           style={{ width: 180 }}
           defaultValue="None"
           onChange={(value) => {

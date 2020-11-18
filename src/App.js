@@ -2,6 +2,7 @@ import { Button, notification } from "antd";
 import React, { useState } from "react";
 import { listOfDays } from "./Constants";
 import Dropdown from "./Components/Dropdown";
+import Logo from "./images/logo.png";
 import "antd/dist/antd.css";
 import "./App.css";
 
@@ -68,32 +69,36 @@ function App() {
     return data;
   };
 
-  const onSubmit = async () => {
-    const data = formatData();
-    const result = await axios.post(
-      "https://goodlife-autobook-server.herokuapp.com/",
-      data,
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    openNotification(result.data);
-    console.log(result.data);
-  };
-
-  // local
   // const onSubmit = async () => {
   //   const data = formatData();
-  //   console.log(bookingTimeIntervals);
-  //   const res = await axios.post("http://localhost:8000/", data, {
-  //     headers: { "Content-Type": "application/json" },
-  //   });
-  //   openNotification(res.data);
-  //   console.log(res.data);
+  //   const result = await axios.post(
+  //     "https://goodlife-autobook-server.herokuapp.com/",
+  //     data,
+  //     {
+  //       headers: { "Content-Type": "application/json" },
+  //     }
+  //   );
+  //   openNotification(result.data);
+  //   console.log(result.data);
   // };
+
+  // local
+  const onSubmit = async () => {
+    const data = formatData();
+    console.log(bookingTimeIntervals);
+    const res = await axios.post("http://localhost:8000/", data, {
+      headers: { "Content-Type": "application/json" },
+    });
+    openNotification(res.data);
+    console.log(res.data);
+  };
 
   return (
     <div className="App">
+      <div>
+        <img src={Logo} alt="logo" className="logo" />
+      </div>
+
       <input type="email" placeholder="username" onChange={handleEmail} />
       <input type="text" placeholder="password" onChange={handlePassword} />
       <div className="dropdown-menus-container">
