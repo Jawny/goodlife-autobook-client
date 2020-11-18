@@ -69,29 +69,29 @@ function App() {
     return data;
   };
 
-  // const onSubmit = async () => {
-  //   const data = formatData();
-  //   const result = await axios.post(
-  //     "https://goodlife-autobook-server.herokuapp.com/",
-  //     data,
-  //     {
-  //       headers: { "Content-Type": "application/json" },
-  //     }
-  //   );
-  //   openNotification(result.data);
-  //   console.log(result.data);
-  // };
-
-  // local
   const onSubmit = async () => {
     const data = formatData();
-    console.log(bookingTimeIntervals);
-    const res = await axios.post("http://localhost:8000/", data, {
-      headers: { "Content-Type": "application/json" },
-    });
-    openNotification(res.data);
-    console.log(res.data);
+    const result = await axios.post(
+      "https://goodlife-autobook-server.herokuapp.com/",
+      data,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    openNotification(result.data);
+    console.log(result.data);
   };
+
+  // // local
+  // const onSubmit = async () => {
+  //   const data = formatData();
+  //   console.log(bookingTimeIntervals);
+  //   const res = await axios.post("http://localhost:8000/", data, {
+  //     headers: { "Content-Type": "application/json" },
+  //   });
+  //   openNotification(res.data);
+  //   console.log(res.data);
+  // };
 
   return (
     <div className="App">
