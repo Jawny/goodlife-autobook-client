@@ -1,4 +1,4 @@
-import { Button, notification } from "antd";
+import { Button, notification, Spin } from "antd";
 import React, { useState } from "react";
 import { listOfDays } from "./Constants";
 import Dropdown from "./Components/Dropdown";
@@ -11,6 +11,7 @@ const axios = require("axios");
 function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   // indexed per day
   const [bookingTimeIntervals, setBookingTimeIntervals] = useState([
     0,
@@ -69,29 +70,35 @@ function App() {
     return data;
   };
 
-  const onSubmit = async () => {
-    const data = formatData();
-    const result = await axios.post(
-      "https://goodlife-autobook-server.herokuapp.com/",
-      data,
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    openNotification(result.data);
-    console.log(result.data);
-  };
-
-  // // local
   // const onSubmit = async () => {
   //   const data = formatData();
-  //   console.log(bookingTimeIntervals);
-  //   const res = await axios.post("http://localhost:8000/", data, {
-  //     headers: { "Content-Type": "application/json" },
-  //   });
-  //   openNotification(res.data);
-  //   console.log(res.data);
+  //   const result = await axios.post(
+  //     "https://goodlife-autobook-server.herokuapp.com/",
+  //     data,
+  //     {
+  //       headers: { "Content-Type": "application/json" },
+  //     }
+  //   );
+  //   openNotification(result.data);
+  //   console.log(result.data);
   // };
+
+  // // local
+  const onSubmit = async () => {
+    const data = formatData();
+    console.log(bookingTimeIntervals);
+    setLoading(true);
+    const res = await axios
+      .post("http://localhost:8000/", data, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then(() => {
+        setLoading(false);
+        return false;
+      });
+    openNotification(res.data);
+    console.log(res.data);
+  };
 
   return (
     <div className="App">
@@ -107,7 +114,16 @@ function App() {
           handleBookingTimes={handleBookingTimes}
         />
       </div>
-      <Button onClick={onSubmit}>Submit</Button>
+      <Button onClick={onSubmit} disabled={loading}>
+        Submit
+      </Button>
+      {loading ? (
+        <div className="spinner">
+          <Spin size="large" />
+        </div>
+      ) : (
+        <div />
+      )}
     </div>
   );
 }

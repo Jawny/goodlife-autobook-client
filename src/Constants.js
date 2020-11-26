@@ -19,15 +19,16 @@ const weekday = [
 
 const weekend = [
   { value: null, text: "None" },
-  // { value: 6, text: "7:00AM - 8:00AM" },
-  // { value: 7.5, text: "8:30AM - 9:00AM" },
-  // { value: 9, text: "10:00AM - 11:00AM" },
-  // { value: 10.5, text: "11:30AM - 12:30PM" },
-  // { value: 12, text: "1:00PM - 2:00PM" },
-  // { value: 13.5, text: "2:30PM - 3:30PM" },
-  // { value: 15, text: "4:00PM - 5:00PM" },
-  // { value: 16.5, text: "5:30PM - 6:30PM" },
-  // { value: 18, text: "7:00PM - 8:00PM" },
+  { value: 16, text: "7:00AM - 8:00AM" },
+  { value: 17, text: "8:15AM - 9:15AM" },
+  { value: 18, text: "9:30AM - 10:30AM" },
+  { value: 19, text: "10:45AM - 11:45AM" },
+  { value: 20, text: "12:00PM - 1:00PM" },
+  { value: 21, text: "1:15PM - 2:15PM" },
+  { value: 22, text: "2:30PM - 3:30PM" },
+  { value: 23, text: "3:45PM - 4:45PM" },
+  { value: 24, text: "5:00PM - 6:00PM" },
+  { value: 25, text: "6:15PM - 7:15PM" },
 ];
 
 const listOfDays = [
