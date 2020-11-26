@@ -72,6 +72,7 @@ function App() {
 
   const onSubmit = async () => {
     const data = formatData();
+    setLoading(true);
     const result = await axios
       .post("https://goodlife-autobook-server.herokuapp.com/", data, {
         headers: { "Content-Type": "application/json" },
