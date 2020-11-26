@@ -77,9 +77,9 @@ function App() {
       .post("https://goodlife-autobook-server.herokuapp.com/", data, {
         headers: { "Content-Type": "application/json" },
       })
-      .then(() => {
+      .then((res) => {
         setLoading(false);
-        return false;
+        return res;
       });
     openNotification(result.data);
   };
