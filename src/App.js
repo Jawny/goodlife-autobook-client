@@ -1,6 +1,6 @@
-import { Button, notification, Spin } from "antd";
+import { Button, notification, Spin, Select, Input } from "antd";
 import React, { useState } from "react";
-import { listOfDays } from "./Constants";
+import { listOfDays, locations } from "./Constants";
 import Dropdown from "./Components/Dropdown";
 import Logo from "./images/logo.png";
 import "antd/dist/antd.css";
@@ -11,6 +11,7 @@ const axios = require("axios");
 function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [clubId, setClubId] = useState(0);
   const [loading, setLoading] = useState(false);
   // indexed per day
   const [bookingTimeIntervals, setBookingTimeIntervals] = useState([
@@ -29,6 +30,10 @@ function App() {
 
   function handlePassword(e) {
     setPassword(e.target.value);
+  }
+
+  function handleSetClubId(e) {
+    setClubId(e);
   }
 
   function handleBookingTimes(value, day) {
@@ -66,6 +71,7 @@ function App() {
       friday: bookingTimeIntervals[4],
       saturday: bookingTimeIntervals[5],
       sunday: bookingTimeIntervals[6],
+      clubId,
     });
     return data;
   };
@@ -107,8 +113,20 @@ function App() {
         <img src={Logo} alt="logo" className="logo" />
       </div>
 
-      <input type="email" placeholder="username" onChange={handleEmail} />
-      <input type="text" placeholder="password" onChange={handlePassword} />
+      <Input.Group className="user-details">
+        <input type="email" placeholder="username" onChange={handleEmail} />
+        <Input.Password placeholder="password" onChange={handlePassword} />
+        <Select className="dropdown-menus-container" onChange={handleSetClubId}>
+          {locations.map((location) => {
+            return (
+              <Select.Option key={location.clubId} value={location.clubId}>
+                {location.name}
+              </Select.Option>
+            );
+          })}
+        </Select>
+      </Input.Group>
+
       <div className="dropdown-menus-container">
         <Dropdown
           listOfDays={listOfDays}
