@@ -78,28 +78,12 @@ function App() {
   };
 
   // ** uncomment to deploy
-  // const onSubmit = async () => {
-  //   const data = formatData();
-  //   console.log(bookingTimeIntervals);
-  //   setLoading(true);
-  //   const res = await axios
-  //     .post("https://goodlife-autobook-server.herokuapp.com/", data, {
-  //       headers: { "Content-Type": "application/json" },
-  //     })
-  //     .then((e) => {
-  //       setLoading(false);
-  //       return e.data;
-  //     });
-  //   openNotification(res);
-  // };
-
-  // ** Uncomment for local testing
   const onSubmit = async () => {
     const data = formatData();
     console.log(bookingTimeIntervals);
     setLoading(true);
     const res = await axios
-      .post("http://localhost:8000/", data, {
+      .post("https://goodlife-autobook-server.herokuapp.com/", data, {
         headers: { "Content-Type": "application/json" },
       })
       .then((e) => {
@@ -108,6 +92,22 @@ function App() {
       });
     openNotification(res);
   };
+
+  // ** Uncomment for local testing
+  // const onSubmit = async () => {
+  //   const data = formatData();
+  //   console.log(bookingTimeIntervals);
+  //   setLoading(true);
+  //   const res = await axios
+  //     .post("http://localhost:8000/", data, {
+  //       headers: { "Content-Type": "application/json" },
+  //     })
+  //     .then((e) => {
+  //       setLoading(false);
+  //       return e.data;
+  //     });
+  //   openNotification(res);
+  // };
 
   const onSubmitFailed = () => {
     console.log("failed to submit");
