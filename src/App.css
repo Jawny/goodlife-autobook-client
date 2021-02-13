@@ -50,6 +50,11 @@
   padding: 20px;
 }
 
+.user-details {
+  width: 400px;
+  margin: auto;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

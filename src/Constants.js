@@ -41,8 +41,15 @@ const listOfDays = [
   { dayIndex: 6, day: "Sunday", isWeekDay: false },
 ];
 
+const locations = [
+  { clubId: 243, name: "Burnaby Metrotown" },
+  // { clubId: 213, name: "Burnaby Northgate" },
+  // { clubId: 278, name: "Surrey Newton Commerce Centre" },
+];
+
 module.exports = {
   weekday,
   weekend,
   listOfDays,
+  locations,
 };
