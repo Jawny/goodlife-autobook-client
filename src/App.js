@@ -1,4 +1,4 @@
-import { Button, notification, Spin, Select, Input } from "antd";
+import { Button, notification, Spin, Select, Input, Form } from "antd";
 import React, { useState } from "react";
 import { listOfDays, locations } from "./Constants";
 import Dropdown from "./Components/Dropdown";
@@ -34,6 +34,7 @@ function App() {
 
   function handleSetClubId(e) {
     setClubId(e);
+    debugger;
   }
 
   function handleBookingTimes(value, day) {
@@ -76,72 +77,107 @@ function App() {
     return data;
   };
 
-  const onSubmit = async () => {
-    const data = formatData();
-    setLoading(true);
-    const result = await axios
-      .post("https://goodlife-autobook-server.herokuapp.com/", data, {
-        headers: { "Content-Type": "application/json" },
-      })
-      .then((res) => {
-        setLoading(false);
-        return res;
-      });
-    openNotification(result.data);
-  };
-
-  // // local
+  // ** uncomment to deploy
   // const onSubmit = async () => {
   //   const data = formatData();
   //   console.log(bookingTimeIntervals);
   //   setLoading(true);
   //   const res = await axios
-  //     .post("http://localhost:8000/", data, {
+  //     .post("https://goodlife-autobook-server.herokuapp.com/", data, {
   //       headers: { "Content-Type": "application/json" },
   //     })
-  //     .then(() => {
+  //     .then((e) => {
   //       setLoading(false);
-  //       return false;
+  //       return e.data;
   //     });
-  //   openNotification(res.data);
-  //   console.log(res.data);
+  //   openNotification(res);
   // };
+
+  // ** Uncomment for local testing
+  const onSubmit = async () => {
+    const data = formatData();
+    console.log(bookingTimeIntervals);
+    setLoading(true);
+    const res = await axios
+      .post("http://localhost:8000/", data, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((e) => {
+        setLoading(false);
+        return e.data;
+      });
+    openNotification(res);
+  };
+
+  const onSubmitFailed = () => {
+    console.log("failed to submit");
+  };
 
   return (
     <div className="App">
       <div>
         <img src={Logo} alt="logo" className="logo" />
       </div>
+      <Form
+        className="user-details"
+        name="basic"
+        initialValues={{ remember: true }}
+        onFinish={onSubmit}
+        onFinishFailed={onSubmitFailed}
+      >
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[{ required: true, message: "Email is required" }]}
+        >
+          <Input placeholder="Email" onChange={handleEmail} />
+        </Form.Item>
 
-      <Input.Group className="user-details">
-        <input type="email" placeholder="username" onChange={handleEmail} />
-        <Input.Password placeholder="password" onChange={handlePassword} />
-        <Select className="dropdown-menus-container" onChange={handleSetClubId}>
-          {locations.map((location) => {
-            return (
-              <Select.Option key={location.clubId} value={location.clubId}>
-                {location.name}
-              </Select.Option>
-            );
-          })}
-        </Select>
-      </Input.Group>
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: "Please input your password!" }]}
+        >
+          <Input.Password placeholder="Password" onChange={handlePassword} />
+        </Form.Item>
 
-      <div className="dropdown-menus-container">
-        <Dropdown
-          listOfDays={listOfDays}
-          handleBookingTimes={handleBookingTimes}
-        />
-      </div>
-      <Button onClick={onSubmit} disabled={loading}>
-        Submit
-      </Button>
+        <Form.Item label="Club" name="club" rules={[{ required: true }]}>
+          <Select
+            className="dropdown-menus-container"
+            onChange={handleSetClubId}
+          >
+            {locations.map((location) => {
+              return (
+                <Select.Option key={location.clubId} value={location.clubId}>
+                  {location.name}
+                </Select.Option>
+              );
+            })}
+          </Select>
+        </Form.Item>
+
+        <Form.Item>
+          <div className="dropdown-menus-container">
+            <Dropdown
+              listOfDays={listOfDays}
+              handleBookingTimes={handleBookingTimes}
+            />
+          </div>
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit" disabled={loading}>
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+
       {loading ? (
         <div className="spinner">
           <Spin size="large" />
         </div>
       ) : (
-        <div />
+        <></>
       )}
     </div>
   );
