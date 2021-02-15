@@ -78,6 +78,7 @@ function App() {
       saturday: bookingTimeIntervals[5],
       sunday: bookingTimeIntervals[6],
       clubId,
+      province,
     });
     return data;
   };
