@@ -1,6 +1,6 @@
 import { Button, notification, Spin, Select, Input, Form } from "antd";
-import React, { useState } from "react";
-import { listOfDays, locations } from "./Constants";
+import React, { useState, useCallback } from "react";
+import { listOfDays, locations, weekday } from "./Constants";
 import Dropdown from "./Components/Dropdown";
 import Logo from "./images/logo.png";
 import "antd/dist/antd.css";
@@ -13,6 +13,7 @@ function App() {
   const [password, setPassword] = useState("");
   const [clubId, setClubId] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [province, setProvince] = useState("None");
   // indexed per day
   const [bookingTimeIntervals, setBookingTimeIntervals] = useState([
     0,
@@ -24,20 +25,24 @@ function App() {
     0,
   ]);
 
-  function handleEmail(e) {
+  const handleEmail = (e) => {
     setEmail(e.target.value);
-  }
+  };
 
-  function handlePassword(e) {
+  const handlePassword = (e) => {
     setPassword(e.target.value);
-  }
+  };
 
-  function handleSetClubId(e) {
-    setClubId(e);
-    debugger;
-  }
+  const handleSetClubId = useCallback(
+    (e) => {
+      setClubId(e);
+      const club = locations.find((location) => location.clubId === Number(e));
+      setProvince(club.province);
+    },
+    [clubId]
+  );
 
-  function handleBookingTimes(value, day) {
+  const handleBookingTimes = (value, day) => {
     // console.log(value, day);
     // create a deep copy
     const bookingTimeIntervalsCopy = JSON.parse(
@@ -45,7 +50,7 @@ function App() {
     );
     bookingTimeIntervalsCopy[day] = value;
     setBookingTimeIntervals(bookingTimeIntervalsCopy);
-  }
+  };
 
   const openNotification = (result) => {
     if (result) {
@@ -73,6 +78,7 @@ function App() {
       saturday: bookingTimeIntervals[5],
       sunday: bookingTimeIntervals[6],
       clubId,
+      province,
     });
     return data;
   };
@@ -148,7 +154,7 @@ function App() {
           >
             {locations.map((location) => {
               return (
-                <Select.Option key={location.clubId} value={location.clubId}>
+                <Select.Option key={location.clubId}>
                   {location.name}
                 </Select.Option>
               );
@@ -156,11 +162,14 @@ function App() {
           </Select>
         </Form.Item>
 
-        <Form.Item>
+        <Form.Item
+          className={clubId === 0 ? "form-dropdown-hidden" : "form-dropdown"}
+        >
           <div className="dropdown-menus-container">
             <Dropdown
               listOfDays={listOfDays}
               handleBookingTimes={handleBookingTimes}
+              province={province}
             />
           </div>
         </Form.Item>
