@@ -1,13 +1,16 @@
-import { Button, notification, Spin, Select, Input, Form } from "antd";
+import { Button, notification, Select, Input, Form } from "antd";
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import React, { useState, useCallback } from "react";
 import { listOfDays, locations, weekday } from "../Constants";
-import { Dropdown } from "../components/index";
+import { Dropdown, Loading } from "../components/index";
 import Logo from "../images/logo.png";
 import "antd/dist/antd.css";
 
 const axios = require("axios");
 
 const Profile = () => {
+  const { user } = useAuth0();
+  // const { name, picture, email } = user;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [clubId, setClubId] = useState(0);
@@ -180,15 +183,11 @@ const Profile = () => {
         </Form.Item>
       </Form>
 
-      {loading ? (
-        <div className="spinner">
-          <Spin size="large" />
-        </div>
-      ) : (
-        <></>
-      )}
+      {loading ? <Loading /> : <></>}
     </div>
   );
 };
 
-export default Profile;
+export default withAuthenticationRequired(Profile, {
+  onRedirecting: () => <Loading />,
+});
