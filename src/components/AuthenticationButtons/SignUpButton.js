@@ -1,18 +1,22 @@
-import React from "react";
+import { lazy } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const SignupButton = () => {
+const Button = lazy(() => import("../../common/Button"));
+
+const SignupButton = (props) => {
   const { loginWithRedirect } = useAuth0();
+  const { text } = props;
   return (
-    <button
+    <Button
+      className="signup-button"
       onClick={() =>
         loginWithRedirect({
           screen_hint: "signup",
         })
       }
     >
-      Sign Up
-    </button>
+      {text || "Sign Up"}
+    </Button>
   );
 };
 
