@@ -1,0 +1,37 @@
+.booking-form {
+  text-align: center;
+}
+
+.dropdown-menus-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+
+.day-text {
+  font-size: 30px;
+}
+
+.logo-container {
+  height: 10px;
+  width: 100%;
+}
+
+.logo {
+  margin: 20px;
+  max-width: 100%;
+  width: auto;
+}
+
+.spinner {
+  padding: 20px;
+}
+
+.user-details {
+  width: 400px;
+  margin: auto;
+}
+
+.form-dropdown-hidden {
+  visibility: hidden;
+}
