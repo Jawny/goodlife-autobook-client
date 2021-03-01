@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import Profile from "../pages/Profile";
 import routes from "./config";
 import GlobalStyles from "../globalStyles";
+import StripeContainer from "../components/Payment/StripeContainer";
 
 const Router = () => {
   return (
@@ -24,6 +25,7 @@ const Router = () => {
           );
         })}
         <ProtectedRoute path="/profile" exact component={Profile} />
+        <Route path="/payment" exact component={StripeContainer} />
       </Switch>
       <Footer />
     </Suspense>
