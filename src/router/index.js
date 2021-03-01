@@ -4,7 +4,6 @@ import ProtectedRoute from "../auth/ProtectedRoute";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Profile from "../pages/Profile";
-
 import routes from "./config";
 import GlobalStyles from "../globalStyles";
 
