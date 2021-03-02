@@ -3,10 +3,9 @@ import { Switch, Route } from "react-router-dom";
 import ProtectedRoute from "../auth/ProtectedRoute";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import Profile from "../pages/Profile";
+import StripeContainer from "../pages/Profile/StripeContainer";
 import routes from "./config";
 import GlobalStyles from "../globalStyles";
-import StripeContainer from "../components/Payment/StripeContainer";
 
 const Router = () => {
   return (
@@ -24,8 +23,8 @@ const Router = () => {
             />
           );
         })}
-        <ProtectedRoute path="/profile" exact component={Profile} />
-        <Route path="/payment" exact component={StripeContainer} />
+        <ProtectedRoute path="/profile" exact component={StripeContainer} />
+        {/* <Route path="/payment" exact component={StripeContainer} /> */}
       </Switch>
       <Footer />
     </Suspense>

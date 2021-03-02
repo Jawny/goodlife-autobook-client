@@ -1,6 +1,7 @@
 import { notification, Select, Input, Form } from "antd";
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState, useCallback, lazy } from "react";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { listOfDays, locations, weekday } from "../../Constants";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import Loading from "../../components/Loading/Loading";
@@ -13,13 +14,15 @@ const axios = require("axios");
 
 const Profile = () => {
   const { user } = useAuth0();
-  const { sub } = user;
+  const { sub, email } = user;
   const [userid, setUserid] = useState(sub);
-  const [email, setEmail] = useState("");
+  const [goodlifeEmail, goodlifeSetEmail] = useState("");
   const [password, setPassword] = useState("");
   const [clubId, setClubId] = useState(0);
   const [loading, setLoading] = useState(false);
   const [province, setProvince] = useState("None");
+  const stripe = useStripe();
+  const elements = useElements();
   // indexed per day
   const [bookingTimeIntervals, setBookingTimeIntervals] = useState([
     0,
@@ -31,8 +34,8 @@ const Profile = () => {
     0,
   ]);
 
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
+  const handleGoodlifeEmail = (e) => {
+    goodlifeSetEmail(e.target.value);
   };
 
   const handlePassword = (e) => {
@@ -75,7 +78,7 @@ const Profile = () => {
   const formatData = () => {
     const data = JSON.stringify({
       userid,
-      email,
+      email: goodlifeEmail,
       password,
       monday: bookingTimeIntervals[0],
       tuesday: bookingTimeIntervals[1],
@@ -91,28 +94,12 @@ const Profile = () => {
   };
 
   // ** uncomment to deploy
-  const onSubmit = async () => {
-    const data = formatData();
-    // console.log(bookingTimeIntervals);
-    setLoading(true);
-    const res = await axios
-      .post("https://goodlife-autobook-server.herokuapp.com/", data, {
-        headers: { "Content-Type": "application/json" },
-      })
-      .then((e) => {
-        setLoading(false);
-        return e.data;
-      });
-    openNotification(res);
-  };
-
-  // ** Uncomment for local testing
   // const onSubmit = async () => {
   //   const data = formatData();
-  //   console.log(bookingTimeIntervals);
+  //   // console.log(bookingTimeIntervals);
   //   setLoading(true);
   //   const res = await axios
-  //     .post("http://localhost:8000/", data, {
+  //     .post("https://goodlife-autobook-server.herokuapp.com/", data, {
   //       headers: { "Content-Type": "application/json" },
   //     })
   //     .then((e) => {
@@ -121,6 +108,38 @@ const Profile = () => {
   //     });
   //   openNotification(res);
   // };
+
+  // ** Uncomment for local testing
+  const onSubmit = async () => {
+    console.log("userdata", user);
+    const data = formatData();
+    console.log(bookingTimeIntervals);
+    setLoading(true);
+
+    const checkIfUserExists = await axios.get(
+      "http://localhost:8000/users/" + sub
+    );
+
+    if (checkIfUserExists) {
+      const paymentPortal = await axios.post("http://localhost:8000/payment", {
+        email,
+      });
+      console.log(paymentPortal.data);
+      // const res = await axios
+      //   .post("http://localhost:8000/", data, {
+      //     headers: { "Content-Type": "application/json" },
+      //   })
+      //   .then((e) => {
+      //     setLoading(false);
+      //     return e.data;
+      //   });
+      // openNotification(res);
+    } else {
+      const paymentPortal = await axios.post("http://localhost:8000/payment", {
+        email,
+      });
+    }
+  };
 
   const onSubmitFailed = () => {
     console.log("failed to submit");
@@ -150,7 +169,7 @@ const Profile = () => {
           name="email"
           rules={[{ required: true, message: "Email is required" }]}
         >
-          <Input placeholder="Email" onChange={handleEmail} />
+          <Input placeholder="Email" onChange={handleGoodlifeEmail} />
         </Form.Item>
 
         <Form.Item
