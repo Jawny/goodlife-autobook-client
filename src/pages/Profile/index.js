@@ -1,7 +1,12 @@
 import { notification, Select, Input, Form } from "antd";
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState, useCallback, lazy } from "react";
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import {
+  CardElement,
+  useElements,
+  useStripe,
+  loadStripe,
+} from "@stripe/react-stripe-js";
 import { listOfDays, locations, weekday } from "../../Constants";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import Loading from "../../components/Loading/Loading";
@@ -23,6 +28,7 @@ const Profile = () => {
   const [province, setProvince] = useState("None");
   const stripe = useStripe();
   const elements = useElements();
+
   // indexed per day
   const [bookingTimeIntervals, setBookingTimeIntervals] = useState([
     0,
@@ -121,10 +127,14 @@ const Profile = () => {
     );
 
     if (checkIfUserExists) {
-      const paymentPortal = await axios.post("http://localhost:8000/payment", {
-        email,
-      });
+      const paymentPortal = await axios.post(
+        "http://localhost:8000/create-checkout-session",
+        {
+          email,
+        }
+      );
       console.log(paymentPortal.data);
+      stripe.redirectToCheckout({ sessionId: paymentPortal.data.id });
       // const res = await axios
       //   .post("http://localhost:8000/", data, {
       //     headers: { "Content-Type": "application/json" },
@@ -135,9 +145,6 @@ const Profile = () => {
       //   });
       // openNotification(res);
     } else {
-      const paymentPortal = await axios.post("http://localhost:8000/payment", {
-        email,
-      });
     }
   };
 
