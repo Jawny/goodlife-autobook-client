@@ -1,3 +1,4 @@
+import axios from "axios";
 import { notification, Select, Input, Form } from "antd";
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState, useCallback, lazy } from "react";
@@ -8,6 +9,14 @@ import {
   loadStripe,
 } from "@stripe/react-stripe-js";
 import { listOfDays, locations, weekday } from "../../Constants";
+import {
+  checkIfSubscribed,
+  checkIfRegistered,
+  createCustomer,
+  createCheckout,
+  getCheckoutSessionStatus,
+  createCustomerAndCheckoutFlow,
+} from "../../utils/index";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import Loading from "../../components/Loading/Loading";
 import "antd/dist/antd.css";
@@ -15,11 +24,10 @@ import "./Profile.css";
 
 const Button = lazy(() => import("../../common/Button"));
 const SvgIcon = lazy(() => import("../../common/SvgIcon"));
-const axios = require("axios");
 
 const Profile = () => {
   const { user } = useAuth0();
-  const { sub, email } = user;
+  const { sub, email, email_verified } = user;
   const [userid, setUserid] = useState(sub);
   const [goodlifeEmail, goodlifeSetEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -99,53 +107,56 @@ const Profile = () => {
     return data;
   };
 
-  // ** uncomment to deploy
-  // const onSubmit = async () => {
-  //   const data = formatData();
-  //   // console.log(bookingTimeIntervals);
-  //   setLoading(true);
-  //   const res = await axios
-  //     .post("https://goodlife-autobook-server.herokuapp.com/", data, {
-  //       headers: { "Content-Type": "application/json" },
-  //     })
-  //     .then((e) => {
-  //       setLoading(false);
-  //       return e.data;
-  //     });
-  //   openNotification(res);
-  // };
-
-  // ** Uncomment for local testing
   const onSubmit = async () => {
-    console.log("userdata", user);
-    const data = formatData();
-    console.log(bookingTimeIntervals);
-    setLoading(true);
-
-    const checkIfUserExists = await axios.get(
-      "http://localhost:8000/users/" + sub
-    );
-
-    if (checkIfUserExists) {
-      const paymentPortal = await axios.post(
-        "http://localhost:8000/create-checkout-session",
-        {
+    const registeredInDatabase = await checkIfRegistered(sub);
+    debugger;
+    // if auth0 userId not in db -> create a new user and prompt payment
+    if (registeredInDatabase) {
+      try {
+        console.log(user);
+        const checkout = await createCustomerAndCheckoutFlow(
           email,
-        }
-      );
-      console.log(paymentPortal.data);
-      stripe.redirectToCheckout({ sessionId: paymentPortal.data.id });
-      // const res = await axios
-      //   .post("http://localhost:8000/", data, {
-      //     headers: { "Content-Type": "application/json" },
-      //   })
-      //   .then((e) => {
-      //     setLoading(false);
-      //     return e.data;
-      //   });
-      // openNotification(res);
-    } else {
+          email_verified,
+          sub
+        );
+        const { data } = checkout;
+        const { id } = data;
+        console.log(id);
+      } catch (error) {}
     }
+    // if auth0 userId exists in db but not paid -> update user details and prompt payment
+
+    //if auth 0 userId exists in db and paid -> update user details
+    // console.log("userdata", user);
+    // const data = formatData();
+    // console.log(bookingTimeIntervals);
+    // setLoading(true);
+
+    // const checkIfUserExists = await axios.get(
+    //   "http://localhost:8000/users/" + sub
+    // );
+
+    // if (checkIfUserExists) {
+    //   const paymentPortal = await axios.post(
+    //     "http://localhost:8000/payment/update",
+    //     {
+    //       email,
+    //     }
+    //   );
+    //   console.log(paymentPortal.data);
+    //   stripe.redirectToCheckout({ sessionId: paymentPortal.data.id });
+
+    //   // const res = await axios
+    //   //   .post("http://localhost:8000/", data, {
+    //   //     headers: { "Content-Type": "application/json" },
+    //   //   })
+    //   //   .then((e) => {
+    //   //     setLoading(false);
+    //   //     return e.data;
+    //   //   });
+    //   // openNotification(res);
+    // } else {
+    // }
   };
 
   const onSubmitFailed = () => {
