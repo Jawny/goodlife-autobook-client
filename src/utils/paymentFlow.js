@@ -1,20 +1,20 @@
 const axios = require("axios");
 
 // Create Stripe customer and return customerId
-const createCustomer = async (email) => {
-  const customer = await axios.get(
+const createCustomer = async (email, authUserId) => {
+  const customer = await axios.post(
     `${process.env.REACT_APP_DOMAIN}/payments/create-customer`,
-    { email }
+    { email, authUserId }
   );
-  debugger;
-  return customer.id;
+  // debugger;
+  return customer;
 };
 
 // Create a Stripe Checkout and return the checkout session object.
-const createCheckout = async (email, customerId) => {
+const createCheckout = async (email, customerId, authUserId) => {
   const checkout = await axios.get(
     `${process.env.REACT_APP_DOMAIN}/payments/create-checkout`,
-    { email, customerId }
+    { email, customerId, authUserId }
   );
 
   return checkout;
