@@ -9,14 +9,7 @@ import {
   loadStripe,
 } from "@stripe/react-stripe-js";
 import { listOfDays, locations, weekday } from "../../Constants";
-import {
-  checkIfSubscribed,
-  checkIfRegistered,
-  createCustomer,
-  createCheckout,
-  getCheckoutSessionStatus,
-  createCustomerAndCheckoutFlow,
-} from "../../utils/index";
+import { checkIfUserExists, createCustomer, createCheckout } from "../../api";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import Loading from "../../components/Loading/Loading";
 import "antd/dist/antd.css";
@@ -27,8 +20,8 @@ const SvgIcon = lazy(() => import("../../common/SvgIcon"));
 
 const Profile = () => {
   const { user } = useAuth0();
-  const { sub, email, email_verified } = user;
-  const [userid, setUserid] = useState(sub);
+  const { sub: userId, email, email_verified } = user;
+  const [userid, setUserid] = useState(userId);
   const [goodlifeEmail, goodlifeSetEmail] = useState("");
   const [password, setPassword] = useState("");
   const [clubId, setClubId] = useState(0);
@@ -108,52 +101,21 @@ const Profile = () => {
   };
 
   const onSubmit = async () => {
-    const customer = await createCustomer("test@test.com", sub);
-    console.log("customer", customer);
-    const customerId = customer.data.id;
-    console.log(customerId);
-    const test = await axios.post(
-      `${process.env.REACT_APP_DOMAIN}/payments/retrieve-customer`,
-      { customerId }
-    );
-    console.log("test", test);
-    // const checkout = await createCheckout("test@test.com", customer, sub);
-    // console.log("checkout", checkout);
-    // stripe.redirectToCheckout({ sessionId: checkout.data.id });
+    // Try to find user in the DB
+    const userExists = await checkIfUserExists(userId);
+    debugger;
+    if (!userExists) {
+      // Create customer
+      const customer = await createCustomer(email, userId);
+      debugger;
+      // Initiate checkout for customer
+      const checkoutSession = await createCheckout(email, customer.id, userId);
+      stripe.redirectToCheckout({
+        sessionId: checkoutSession.id,
+      });
+      debugger;
+    }
   };
-  // if auth0 userId exists in db but not paid -> update user details and prompt payment
-
-  //if auth 0 userId exists in db and paid -> update user details
-  // console.log("userdata", user);
-  // const data = formatData();
-  // console.log(bookingTimeIntervals);
-  // setLoading(true);
-
-  // const checkIfUserExists = await axios.get(
-  //   "http://localhost:8000/users/" + sub
-  // );
-
-  // if (checkIfUserExists) {
-  //   const paymentPortal = await axios.post(
-  //     "http://localhost:8000/payment/update",
-  //     {
-  //       email,
-  //     }
-  //   );
-  //   console.log(paymentPortal.data);
-  //   stripe.redirectToCheckout({ sessionId: paymentPortal.data.id });
-
-  //   // const res = await axios
-  //   //   .post("http://localhost:8000/", data, {
-  //   //     headers: { "Content-Type": "application/json" },
-  //   //   })
-  //   //   .then((e) => {
-  //   //     setLoading(false);
-  //   //     return e.data;
-  //   //   });
-  //   // openNotification(res);
-  // } else {
-  // }
 
   const onSubmitFailed = () => {
     console.log("failed to submit");
