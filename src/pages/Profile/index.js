@@ -9,9 +9,18 @@ import {
   loadStripe,
 } from "@stripe/react-stripe-js";
 import { listOfDays, locations, weekday } from "../../Constants";
-import { checkIfUserExists, createCustomer, createCheckout } from "../../api";
+import {
+  checkIfUserExists,
+  checkIfSubscriptionActive,
+  createBillingInformationPortal,
+  createCustomer,
+  createCheckout,
+  getUserData,
+  updateGoodlifeData,
+} from "../../api";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import Loading from "../../components/Loading/Loading";
+import ProfileDetails from "../../components/ProfileDetails";
 import "antd/dist/antd.css";
 import "./Profile.css";
 
@@ -82,9 +91,39 @@ const Profile = () => {
     }
   };
 
-  const formatData = () => {
-    const data = JSON.stringify({
-      userid,
+  const onSubmit = async () => {
+    // Try to find user in the DB
+    const userExists = await checkIfUserExists(userId);
+
+    if (!userExists) {
+      // Create customer
+      const customer = await createCustomer(email, userId);
+      // Initiate checkout for customer
+      const checkoutSession = await createCheckout(email, customer.id, userId);
+      stripe.redirectToCheckout({
+        sessionId: checkoutSession.id,
+      });
+    }
+    // check if status is valid
+    const userData = await getUserData(userId);
+    const customerId = userData.payment.customerId;
+    const subId = userData.payment.subId;
+    const subStatus = await checkIfSubscriptionActive(subId);
+    debugger;
+    if (subStatus.toLowerCase() !== "active") {
+      // trigger billing portal to open
+      const checkoutSession = await createCheckout(email, customerId, userId);
+      stripe.redirectToCheckout({
+        sessionId: checkoutSession.id,
+      });
+      // const billingPortalUrl = await createBillingInformationPortal(customerId);
+      // console.log(billingPortalUrl);
+      // window.location.replace(billingPortalUrl);
+      // remember to deal with updating sub stuff
+    }
+
+    const goodlifeData = {
+      authUserId: userId,
       email: goodlifeEmail,
       password,
       monday: bookingTimeIntervals[0],
@@ -96,25 +135,9 @@ const Profile = () => {
       sunday: bookingTimeIntervals[6],
       clubId,
       province,
-    });
-    return data;
-  };
-
-  const onSubmit = async () => {
-    // Try to find user in the DB
-    const userExists = await checkIfUserExists(userId);
-    debugger;
-    if (!userExists) {
-      // Create customer
-      const customer = await createCustomer(email, userId);
-      debugger;
-      // Initiate checkout for customer
-      const checkoutSession = await createCheckout(email, customer.id, userId);
-      stripe.redirectToCheckout({
-        sessionId: checkoutSession.id,
-      });
-      debugger;
-    }
+    };
+    const response = await updateGoodlifeData(goodlifeData);
+    await openNotification(response);
   };
 
   const onSubmitFailed = () => {
@@ -122,75 +145,78 @@ const Profile = () => {
   };
 
   return (
-    <div className="booking-form">
-      <div className="logo">
-        <SvgIcon
-          className="logo"
-          src="logo.svg"
-          aria-label="homepage"
-          width="101px"
-          height="64px"
-        />
-      </div>
+    <div className="profile-container">
+      <ProfileDetails userId={userId} />
+      <div className="booking-form">
+        <div className="logo">
+          <SvgIcon
+            className="logo"
+            src="logo.svg"
+            aria-label="homepage"
+            width="101px"
+            height="64px"
+          />
+        </div>
 
-      <Form
-        className="user-details"
-        name="basic"
-        initialValues={{ remember: true }}
-        onFinish={onSubmit}
-        onFinishFailed={onSubmitFailed}
-      >
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[{ required: true, message: "Email is required" }]}
+        <Form
+          className="user-details"
+          name="basic"
+          initialValues={{ remember: true }}
+          onFinish={onSubmit}
+          onFinishFailed={onSubmitFailed}
         >
-          <Input placeholder="Email" onChange={handleGoodlifeEmail} />
-        </Form.Item>
-
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[{ required: true, message: "Please input your password!" }]}
-        >
-          <Input.Password placeholder="Password" onChange={handlePassword} />
-        </Form.Item>
-
-        <Form.Item label="Club" name="club" rules={[{ required: true }]}>
-          <Select
-            className="dropdown-menus-container"
-            onChange={handleSetClubId}
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: "Email is required" }]}
           >
-            {locations.map((location) => {
-              return (
-                <Select.Option key={location.clubId}>
-                  {location.name}
-                </Select.Option>
-              );
-            })}
-          </Select>
-        </Form.Item>
+            <Input placeholder="Email" onChange={handleGoodlifeEmail} />
+          </Form.Item>
 
-        <Form.Item
-          className={clubId === 0 ? "form-dropdown-hidden" : "form-dropdown"}
-        >
-          <div className="dropdown-menus-container">
-            <Dropdown
-              listOfDays={listOfDays}
-              handleBookingTimes={handleBookingTimes}
-              province={province}
-            />
-          </div>
-        </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input.Password placeholder="Password" onChange={handlePassword} />
+          </Form.Item>
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit" disabled={loading}>
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item label="Club" name="club" rules={[{ required: true }]}>
+            <Select
+              className="dropdown-menus-container"
+              onChange={handleSetClubId}
+            >
+              {locations.map((location) => {
+                return (
+                  <Select.Option key={location.clubId}>
+                    {location.name}
+                  </Select.Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
 
-      {loading ? <Loading /> : <></>}
+          <Form.Item
+            className={clubId === 0 ? "form-dropdown-hidden" : "form-dropdown"}
+          >
+            <div className="dropdown-menus-container">
+              <Dropdown
+                listOfDays={listOfDays}
+                handleBookingTimes={handleBookingTimes}
+                province={province}
+              />
+            </div>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" disabled={loading}>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+
+        {loading ? <Loading /> : <></>}
+      </div>
     </div>
   );
 };
