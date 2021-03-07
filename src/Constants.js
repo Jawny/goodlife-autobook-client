@@ -61,9 +61,38 @@ const locations = [
   { clubId: 160, name: "Ajax Taunton and Westney", province: "ON" },
 ];
 
+const valueToHourConvert = {
+  BC: {
+    0: "None",
+    1: "5:00 pm - 6:00 pm",
+    2: "6:15 pm - 7:15 pm",
+    3: "7:30 pm - 8:30 pm",
+  },
+
+  ON: {
+    0: "None",
+    1: "6:00 am - 7:00 am",
+    2: "7:15 am - 8:15 am",
+    3: "8:30 am - 9:30 am",
+    4: "9:45 am - 10:45 am",
+    5: "11:00 am - 12:00 pm",
+    6: "12:15 pm - 1:15 pm",
+    7: "1:30 pm - 2:30 pm",
+    8: "2:45 pm - 3:45 pm",
+    9: "4:00 pm - 5:00 pm",
+    10: "5:15 pm - 6:15 pm",
+    11: "6:30 pm - 7:30 pm",
+    12: "7:45 pm - 8:45 pm",
+    13: "9:00 pm - 10:00 pm",
+  },
+  // {  14: "10:15 pm - 11:15 pm" },
+  // {  15: "11:15 pm - 11:15 pm" },
+};
+
 module.exports = {
   weekday,
   weekend,
   listOfDays,
   locations,
+  valueToHourConvert,
 };

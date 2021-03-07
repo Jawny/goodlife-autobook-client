@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from "react";
+import { Badge } from "antd";
 import {
   checkIfUserExists,
   checkIfSubscriptionActive,
@@ -5,12 +7,15 @@ import {
 } from "../../api";
 
 const AccountStatus = (props) => {
+  const [status, setStatus] = useState("");
   const { userId } = props;
-  const status = async () => {
+
+  useEffect(async () => {
     const userExists = await checkIfUserExists(userId);
 
     if (!userExists) {
-      return false;
+      setStatus("INACTIVE");
+      return;
     }
 
     // check if status is valid
@@ -19,12 +24,26 @@ const AccountStatus = (props) => {
     const subStatus = await checkIfSubscriptionActive(subId);
 
     if (subStatus.toLowerCase() === "active") {
-      return true;
+      setStatus("ACTIVE");
+      return;
     }
-    return false;
-  };
+  }, []);
 
-  return <div className="profile-status">{status ? "ACTIVE" : "INACTIVE"}</div>;
+  return (
+    <div
+      className={
+        status.toLowerCase() === "active"
+          ? "profile-status active"
+          : "profile-status inactive"
+      }
+    >
+      <Badge
+        color={status.toLowerCase() === "active" ? "green" : "red"}
+        status="processing"
+        text={status !== "" ? status : "INACTIVE"}
+      />
+    </div>
+  );
 };
 
 export default AccountStatus;

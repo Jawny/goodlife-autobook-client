@@ -1,18 +1,11 @@
-import axios from "axios";
 import { notification, Select, Input, Form } from "antd";
 import { useAuth0 } from "@auth0/auth0-react";
-import React, { useState, useCallback, lazy } from "react";
-import {
-  CardElement,
-  useElements,
-  useStripe,
-  loadStripe,
-} from "@stripe/react-stripe-js";
+import React, { useState, useEffect, useCallback, lazy } from "react";
+import { useStripe } from "@stripe/react-stripe-js";
 import { listOfDays, locations, weekday } from "../../Constants";
 import {
   checkIfUserExists,
   checkIfSubscriptionActive,
-  createBillingInformationPortal,
   createCustomer,
   createCheckout,
   getUserData,
@@ -30,14 +23,12 @@ const SvgIcon = lazy(() => import("../../common/SvgIcon"));
 const Profile = () => {
   const { user } = useAuth0();
   const { sub: userId, email, email_verified } = user;
-  const [userid, setUserid] = useState(userId);
   const [goodlifeEmail, goodlifeSetEmail] = useState("");
   const [password, setPassword] = useState("");
   const [clubId, setClubId] = useState(0);
   const [loading, setLoading] = useState(false);
   const [province, setProvince] = useState("None");
   const stripe = useStripe();
-  const elements = useElements();
 
   // indexed per day
   const [bookingTimeIntervals, setBookingTimeIntervals] = useState([
@@ -78,6 +69,7 @@ const Profile = () => {
   };
 
   const openNotification = (result) => {
+    setLoading(false);
     if (result) {
       notification.open({
         message: "REGISTRATION CONFIRMED",
@@ -92,6 +84,7 @@ const Profile = () => {
   };
 
   const onSubmit = async () => {
+    setLoading(true);
     // Try to find user in the DB
     const userExists = await checkIfUserExists(userId);
 
@@ -103,23 +96,23 @@ const Profile = () => {
       stripe.redirectToCheckout({
         sessionId: checkoutSession.id,
       });
+
+      setLoading(true);
     }
     // check if status is valid
     const userData = await getUserData(userId);
     const customerId = userData.payment.customerId;
     const subId = userData.payment.subId;
     const subStatus = await checkIfSubscriptionActive(subId);
-    debugger;
+
     if (subStatus.toLowerCase() !== "active") {
       // trigger billing portal to open
       const checkoutSession = await createCheckout(email, customerId, userId);
       stripe.redirectToCheckout({
         sessionId: checkoutSession.id,
       });
-      // const billingPortalUrl = await createBillingInformationPortal(customerId);
-      // console.log(billingPortalUrl);
-      // window.location.replace(billingPortalUrl);
-      // remember to deal with updating sub stuff
+
+      setLoading(true);
     }
 
     const goodlifeData = {

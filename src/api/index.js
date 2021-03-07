@@ -36,7 +36,7 @@ export const checkIfSubscriptionActive = async (subscriptionId) => {
     `${process.env.REACT_APP_DOMAIN}/payments/get-subscription-status`,
     { subscriptionId }
   );
-  debugger;
+
   return subStatus.data;
   // if (typeof userExists.data === "boolean") {
   //   return userExists.data;

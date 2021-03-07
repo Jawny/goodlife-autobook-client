@@ -1,13 +1,16 @@
-import { lazy } from "react";
 import AccountStatus from "./AccountStatus";
 import BillingPortalButton from "./BillingPortalButton";
+import CurrentBookingDisplay from "./CurrentBookingsDisplay";
+import "./ProfileDetails.css";
 
 const ProfileDetails = (props) => {
   const { userId } = props;
+
   return (
-    <div>
+    <div className="profile-details">
       <AccountStatus userId={userId} />
-      <BillingPortalButton />
+      <CurrentBookingDisplay userId={userId} />
+      <BillingPortalButton userId={userId} />
     </div>
   );
 };

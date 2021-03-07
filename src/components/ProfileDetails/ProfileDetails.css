@@ -1,0 +1,20 @@
+.profile-details {
+  padding-right: 100px;
+}
+
+.schedule-item {
+  padding: 10px;
+}
+
+.profile-status {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.active {
+  color: #228b22;
+}
+
+.inactive {
+  color: #b22222;
+}
