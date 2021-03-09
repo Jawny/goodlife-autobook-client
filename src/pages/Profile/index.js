@@ -1,25 +1,35 @@
 import { notification, Select, Input, Form } from "antd";
 import { useAuth0 } from "@auth0/auth0-react";
-import React, { useState, useCallback, lazy } from "react";
+import React, { useState, useEffect, useCallback, lazy } from "react";
+import { useStripe } from "@stripe/react-stripe-js";
 import { listOfDays, locations, weekday } from "../../Constants";
+import {
+  checkIfUserExists,
+  checkIfSubscriptionActive,
+  createCustomer,
+  createCheckout,
+  getUserData,
+  updateGoodlifeData,
+} from "../../api";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import Loading from "../../components/Loading/Loading";
+import ProfileDetails from "../../components/ProfileDetails";
 import "antd/dist/antd.css";
 import "./Profile.css";
 
 const Button = lazy(() => import("../../common/Button"));
 const SvgIcon = lazy(() => import("../../common/SvgIcon"));
-const axios = require("axios");
 
 const Profile = () => {
   const { user } = useAuth0();
-  const { sub } = user;
-  const [userid, setUserid] = useState(sub);
-  const [email, setEmail] = useState("");
+  const { sub: userId, email, email_verified } = user;
+  const [goodlifeEmail, goodlifeSetEmail] = useState("");
   const [password, setPassword] = useState("");
   const [clubId, setClubId] = useState(0);
   const [loading, setLoading] = useState(false);
   const [province, setProvince] = useState("None");
+  const stripe = useStripe();
+
   // indexed per day
   const [bookingTimeIntervals, setBookingTimeIntervals] = useState([
     0,
@@ -31,8 +41,8 @@ const Profile = () => {
     0,
   ]);
 
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
+  const handleGoodlifeEmail = (e) => {
+    goodlifeSetEmail(e.target.value);
   };
 
   const handlePassword = (e) => {
@@ -59,6 +69,7 @@ const Profile = () => {
   };
 
   const openNotification = (result) => {
+    setLoading(false);
     if (result) {
       notification.open({
         message: "REGISTRATION CONFIRMED",
@@ -72,10 +83,41 @@ const Profile = () => {
     }
   };
 
-  const formatData = () => {
-    const data = JSON.stringify({
-      userid,
-      email,
+  const onSubmit = async () => {
+    setLoading(true);
+    // Try to find user in the DB
+    const userExists = await checkIfUserExists(userId);
+
+    if (!userExists) {
+      // Create customer
+      const customer = await createCustomer(email, userId);
+      // Initiate checkout for customer
+      const checkoutSession = await createCheckout(email, customer.id, userId);
+      stripe.redirectToCheckout({
+        sessionId: checkoutSession.id,
+      });
+
+      setLoading(true);
+    }
+    // check if status is valid
+    const userData = await getUserData(userId);
+    const customerId = userData.payment.customerId;
+    const subId = userData.payment.subId;
+    const subStatus = await checkIfSubscriptionActive(subId);
+
+    if (subStatus.toLowerCase() !== "active") {
+      // trigger billing portal to open
+      const checkoutSession = await createCheckout(email, customerId, userId);
+      stripe.redirectToCheckout({
+        sessionId: checkoutSession.id,
+      });
+
+      setLoading(true);
+    }
+
+    const goodlifeData = {
+      authUserId: userId,
+      email: goodlifeEmail,
       password,
       monday: bookingTimeIntervals[0],
       tuesday: bookingTimeIntervals[1],
@@ -86,116 +128,88 @@ const Profile = () => {
       sunday: bookingTimeIntervals[6],
       clubId,
       province,
-    });
-    return data;
+    };
+    const response = await updateGoodlifeData(goodlifeData);
+    await openNotification(response);
   };
-
-  // ** uncomment to deploy
-  const onSubmit = async () => {
-    const data = formatData();
-    // console.log(bookingTimeIntervals);
-    setLoading(true);
-    const res = await axios
-      .post("https://goodlife-autobook-server.herokuapp.com/", data, {
-        headers: { "Content-Type": "application/json" },
-      })
-      .then((e) => {
-        setLoading(false);
-        return e.data;
-      });
-    openNotification(res);
-  };
-
-  // ** Uncomment for local testing
-  // const onSubmit = async () => {
-  //   const data = formatData();
-  //   console.log(bookingTimeIntervals);
-  //   setLoading(true);
-  //   const res = await axios
-  //     .post("http://localhost:8000/", data, {
-  //       headers: { "Content-Type": "application/json" },
-  //     })
-  //     .then((e) => {
-  //       setLoading(false);
-  //       return e.data;
-  //     });
-  //   openNotification(res);
-  // };
 
   const onSubmitFailed = () => {
     console.log("failed to submit");
   };
 
   return (
-    <div className="booking-form">
-      <div className="logo">
-        <SvgIcon
-          className="logo"
-          src="logo.svg"
-          aria-label="homepage"
-          width="101px"
-          height="64px"
-        />
-      </div>
+    <div className="profile-container">
+      <ProfileDetails userId={userId} />
+      <div className="booking-form">
+        <div className="logo">
+          <SvgIcon
+            className="logo"
+            src="logo.svg"
+            aria-label="homepage"
+            width="101px"
+            height="64px"
+          />
+        </div>
 
-      <Form
-        className="user-details"
-        name="basic"
-        initialValues={{ remember: true }}
-        onFinish={onSubmit}
-        onFinishFailed={onSubmitFailed}
-      >
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[{ required: true, message: "Email is required" }]}
+        <Form
+          className="user-details"
+          name="basic"
+          initialValues={{ remember: true }}
+          onFinish={onSubmit}
+          onFinishFailed={onSubmitFailed}
         >
-          <Input placeholder="Email" onChange={handleEmail} />
-        </Form.Item>
-
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[{ required: true, message: "Please input your password!" }]}
-        >
-          <Input.Password placeholder="Password" onChange={handlePassword} />
-        </Form.Item>
-
-        <Form.Item label="Club" name="club" rules={[{ required: true }]}>
-          <Select
-            className="dropdown-menus-container"
-            onChange={handleSetClubId}
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: "Email is required" }]}
           >
-            {locations.map((location) => {
-              return (
-                <Select.Option key={location.clubId}>
-                  {location.name}
-                </Select.Option>
-              );
-            })}
-          </Select>
-        </Form.Item>
+            <Input placeholder="Email" onChange={handleGoodlifeEmail} />
+          </Form.Item>
 
-        <Form.Item
-          className={clubId === 0 ? "form-dropdown-hidden" : "form-dropdown"}
-        >
-          <div className="dropdown-menus-container">
-            <Dropdown
-              listOfDays={listOfDays}
-              handleBookingTimes={handleBookingTimes}
-              province={province}
-            />
-          </div>
-        </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input.Password placeholder="Password" onChange={handlePassword} />
+          </Form.Item>
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit" disabled={loading}>
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item label="Club" name="club" rules={[{ required: true }]}>
+            <Select
+              className="dropdown-menus-container"
+              onChange={handleSetClubId}
+            >
+              {locations.map((location) => {
+                return (
+                  <Select.Option key={location.clubId}>
+                    {location.name}
+                  </Select.Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
 
-      {loading ? <Loading /> : <></>}
+          <Form.Item
+            className={clubId === 0 ? "form-dropdown-hidden" : "form-dropdown"}
+          >
+            <div className="dropdown-menus-container">
+              <Dropdown
+                listOfDays={listOfDays}
+                handleBookingTimes={handleBookingTimes}
+                province={province}
+              />
+            </div>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" disabled={loading}>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+
+        {loading ? <Loading /> : <></>}
+      </div>
     </div>
   );
 };
