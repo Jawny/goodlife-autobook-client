@@ -4,6 +4,8 @@ import ProtectedRoute from "../auth/ProtectedRoute";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import StripeContainer from "../pages/Profile/StripeContainer";
+import Error from "../pages/Payment/Error";
+import Success from "../pages/Payment/Success";
 import routes from "./config";
 import GlobalStyles from "../globalStyles";
 
@@ -24,7 +26,8 @@ const Router = () => {
           );
         })}
         <ProtectedRoute path="/profile" exact component={StripeContainer} />
-        {/* <Route path="/payment" exact component={StripeContainer} /> */}
+        <Route path="/error" exact component={Error} />
+        <Route path="/success" exact component={Success} />
       </Switch>
       <Footer />
     </Suspense>
