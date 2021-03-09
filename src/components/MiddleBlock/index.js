@@ -8,7 +8,7 @@ import * as S from "./styles";
 
 const Button = lazy(() => import("../../common/Button"));
 
-const MiddleBlock = ({ title, content, button, t }) => {
+const MiddleBlock = ({ title, content, button = true, t, buttonText }) => {
   const scrollTo = (id) => {
     const element = document.getElementById(id);
     element.scrollIntoView({
@@ -34,7 +34,7 @@ const MiddleBlock = ({ title, content, button, t }) => {
               ) : (
                 ""
               )} */}
-              <SignupButton text="Try Now" />
+              {button ? <SignupButton text={buttonText || "Try Now"} /> : <></>}
             </Col>
           </S.ContentWrapper>
         </Fade>
