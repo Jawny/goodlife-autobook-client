@@ -6,6 +6,8 @@ import Header from "../components/Header";
 import StripeContainer from "../pages/Profile/StripeContainer";
 import Error from "../pages/Payment/Error";
 import Success from "../pages/Payment/Success";
+import TOS from "../pages/TOS";
+import Privacy from "../pages/Privacy";
 import routes from "./config";
 import GlobalStyles from "../globalStyles";
 
@@ -28,6 +30,8 @@ const Router = () => {
         <ProtectedRoute path="/profile" exact component={StripeContainer} />
         <Route path="/error" exact component={Error} />
         <Route path="/success" exact component={Success} />
+        <Route path="/tos" exact component={TOS} />
+        <Route path="/privacy" exact component={Privacy} />
       </Switch>
       <Footer />
     </Suspense>
