@@ -22,7 +22,7 @@ const SvgIcon = lazy(() => import("../../common/SvgIcon"));
 
 const Profile = () => {
   const { user } = useAuth0();
-  const { sub: userId, email, email_verified } = user;
+  const { sub: userId, email, email_verified: verified } = user;
   const [goodlifeEmail, goodlifeSetEmail] = useState("");
   const [password, setPassword] = useState("");
   const [clubId, setClubId] = useState(0);
@@ -72,19 +72,33 @@ const Profile = () => {
     setLoading(false);
     if (result) {
       notification.open({
-        message: "REGISTRATION CONFIRMED",
-        description: "YOU ARE SIGNED UP FOR AUTO BOOKINGS",
+        message: "Registration Confirmed",
+        description: "You are now signed up for auto-bookings!",
       });
     } else {
       notification.open({
-        message: "REGISTRATION FAILED",
-        description: "PLEASE CHECK CREDENTIALS AGAIN",
+        message: "Registration Failed",
+        description: "Please check your credentials.",
       });
     }
   };
 
+  const openUnverifiedNotification = () => {
+    setLoading(false);
+    notification.open({
+      message: "Unverified Account",
+      description: "Please check your email to verify your account.",
+    });
+  };
+
   const onSubmit = async () => {
     setLoading(true);
+
+    // ask user to verify email
+    if (!verified) {
+      openUnverifiedNotification();
+      return;
+    }
     // Try to find user in the DB
     const userExists = await checkIfUserExists(userId);
 
@@ -117,6 +131,8 @@ const Profile = () => {
 
     const goodlifeData = {
       authUserId: userId,
+      authEmail: email,
+      verified: verified,
       email: goodlifeEmail,
       password,
       monday: bookingTimeIntervals[0],
@@ -129,6 +145,7 @@ const Profile = () => {
       clubId,
       province,
     };
+
     const response = await updateGoodlifeData(goodlifeData);
     await openNotification(response);
   };
