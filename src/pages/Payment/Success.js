@@ -8,7 +8,7 @@ const Success = () => {
     <Container>
       <MiddleBlock
         title="Success!"
-        content="We have processed your transaction. Please wait up to 24 hours for our system to begin scheduling your workouts."
+        content="We have processed your transaction. Enter your schedule details in the profile menu to allow our system to begin booking for you!"
         button={false}
       />
     </Container>
