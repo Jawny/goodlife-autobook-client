@@ -2,6 +2,13 @@
   padding-right: 100px;
 }
 
+.account-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16px;
+}
 .schedule-item {
   padding: 10px;
 }
@@ -9,6 +16,7 @@
 .profile-status {
   font-weight: bold;
   font-size: 18px;
+  padding-left: 5px;
 }
 
 .active {

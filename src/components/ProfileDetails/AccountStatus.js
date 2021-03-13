@@ -30,18 +30,21 @@ const AccountStatus = (props) => {
   }, []);
 
   return (
-    <div
-      className={
-        status.toLowerCase() === "active"
-          ? "profile-status active"
-          : "profile-status inactive"
-      }
-    >
-      <Badge
-        color={status.toLowerCase() === "active" ? "green" : "red"}
-        status="processing"
-        text={status !== "" ? status : "INACTIVE"}
-      />
+    <div className="account-status">
+      Account Status:
+      <div
+        className={
+          status.toLowerCase() === "active"
+            ? "profile-status active"
+            : "profile-status inactive"
+        }
+      >
+        <Badge
+          color={status.toLowerCase() === "active" ? "green" : "red"}
+          status="processing"
+          text={status !== "" ? status : "INACTIVE"}
+        />
+      </div>
     </div>
   );
 };

@@ -59,6 +59,7 @@ const locations = [
   { clubId: 213, name: "Burnaby Northgate", province: "BC" },
   { clubId: 278, name: "Surrey Newton Commerce Centre", province: "BC" },
   { clubId: 160, name: "Ajax Taunton and Westney", province: "ON" },
+  { clubId: 85, name: "Markham Markville Mall", province: "ON" },
 ];
 
 const valueToHourConvert = {
