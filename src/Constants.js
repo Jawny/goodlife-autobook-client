@@ -60,6 +60,12 @@ const locations = [
   { clubId: 278, name: "Surrey Newton Commerce Centre", province: "BC" },
   { clubId: 160, name: "Ajax Taunton and Westney", province: "ON" },
   { clubId: 85, name: "Markham Markville Mall", province: "ON" },
+  { clubId: 27, name: "London King And Wellington", province: "ON" },
+  // { clubId: 268, name: "Toronto Richmond And John", province: "ON" },
+  // { clubId: 30, name: "Toronto Union Station", province: "ON" },
+  // { clubId: 169, name: "Toronto King Liberty", province: "ON" },
+  // { clubId: 32, name: "Toronto 137 Yonge Street", province: "ON" },
+  // { clubId: 78, name: "Oshawa Centre Mall", province: "ON" },
 ];
 
 const valueToHourConvert = {
