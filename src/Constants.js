@@ -66,6 +66,11 @@ const locations = [
     name: "Hamilton Stone Church And Upper Ottawa",
     province: "ON",
   },
+  {
+    clubId: 128,
+    name: "Whitby Taunton and Brock",
+    province: "ON",
+  },
   // { clubId: 268, name: "Toronto Richmond And John", province: "ON" },
   // { clubId: 30, name: "Toronto Union Station", province: "ON" },
   // { clubId: 169, name: "Toronto King Liberty", province: "ON" },
