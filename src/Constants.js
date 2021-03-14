@@ -71,6 +71,11 @@ const locations = [
     name: "Whitby Taunton and Brock",
     province: "ON",
   },
+  {
+    clubId: 69,
+    name: "Burlington Centre",
+    province: "ON",
+  },
   // { clubId: 268, name: "Toronto Richmond And John", province: "ON" },
   // { clubId: 30, name: "Toronto Union Station", province: "ON" },
   // { clubId: 169, name: "Toronto King Liberty", province: "ON" },
