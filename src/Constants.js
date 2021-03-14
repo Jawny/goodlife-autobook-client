@@ -76,6 +76,11 @@ const locations = [
     name: "Burlington Centre",
     province: "ON",
   },
+  {
+    clubId: 178,
+    name: "Aurora Centre",
+    province: "ON",
+  },
   // { clubId: 268, name: "Toronto Richmond And John", province: "ON" },
   // { clubId: 30, name: "Toronto Union Station", province: "ON" },
   // { clubId: 169, name: "Toronto King Liberty", province: "ON" },
