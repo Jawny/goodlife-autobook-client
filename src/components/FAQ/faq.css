@@ -1,0 +1,19 @@
+.faq-container {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+
+.faq-title {
+  padding-left: 40px;
+  font-size: large;
+  font-weight: bolder;
+}
+
+.faq-list-container {
+  padding: 5px;
+}
+
+.faq-question {
+  font-weight: bold;
+}
