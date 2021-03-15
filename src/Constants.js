@@ -81,6 +81,16 @@ const locations = [
     name: "Aurora Centre",
     province: "ON",
   },
+  {
+    clubId: 78,
+    name: "Oshawa Centre Mall",
+    province: "ON",
+  },
+  {
+    clubId: 271,
+    name: "Whitby Centrum",
+    province: "ON",
+  },
   // { clubId: 268, name: "Toronto Richmond And John", province: "ON" },
   // { clubId: 30, name: "Toronto Union Station", province: "ON" },
   // { clubId: 169, name: "Toronto King Liberty", province: "ON" },
