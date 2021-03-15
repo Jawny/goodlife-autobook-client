@@ -18,6 +18,11 @@ const FAQ = () => {
       a:
         "Our systems update every 3 minutes before each workout session. So if your scheduled workout is at 7:15AM we update at 7:12AM, if your workout is at 8:15AM we update at 8:12AM, etc.",
     },
+    {
+      q: "My workout schedule isn't being updated.",
+      a:
+        "If you've changed your workout schedule please refresh the page to see the update show up.",
+    },
   ];
 
   return (
