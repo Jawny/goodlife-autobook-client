@@ -6,12 +6,11 @@ const FAQ = () => {
     {
       q: "What credentials do I enter?",
       a:
-        "Enter the same credentials you use to login to Goodlife. The email field is either your email or the club id on your Goodlife card.",
+        "Enter the same credentials you use to login to gym. The email field is either your email or the club id on your gym card.",
     },
     {
       q: "My location isn't listed. What do I do?",
-      a:
-        "If you don't see your location please contact me via the email form or send an email directly to goodlifefitnessauto@gmail.com",
+      a: "If you don't see your location please contact me via the email form",
     },
     {
       q: "When will you start automatically booking my workouts?",
@@ -27,7 +26,10 @@ const FAQ = () => {
 
   return (
     <div className="faq-container">
-      <div className="faq-title">FAQ</div>
+      <div className="faq-title">
+        FAQ: We Are Not Associated With Goodlife Fitness. This is a third party
+        application.
+      </div>
       <ol>
         {questions.map((question) => {
           return (
