@@ -14,6 +14,7 @@ import {
 import Dropdown from "../../components/Dropdown/Dropdown";
 import Loading from "../../components/Loading/Loading";
 import ProfileDetails from "../../components/ProfileDetails";
+import FAQ from "../../components/FAQ";
 import "antd/dist/antd.css";
 import "./Profile.css";
 
@@ -227,6 +228,7 @@ const Profile = () => {
 
         {loading ? <Loading /> : <></>}
       </div>
+      <FAQ />
     </div>
   );
 };
