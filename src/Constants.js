@@ -91,6 +91,11 @@ const locations = [
     name: "Whitby Centrum",
     province: "ON",
   },
+  {
+    clubId: 7,
+    name: "Waterloo Weber and University",
+    province: "ON",
+  },
   // { clubId: 268, name: "Toronto Richmond And John", province: "ON" },
   // { clubId: 30, name: "Toronto Union Station", province: "ON" },
   // { clubId: 169, name: "Toronto King Liberty", province: "ON" },
