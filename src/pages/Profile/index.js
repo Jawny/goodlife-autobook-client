@@ -168,7 +168,9 @@ const Profile = () => {
             height="64px"
           />
         </div>
-
+        <div className="warning">
+          WE ARE NOT ASSOCIATED WITH GOODLIFE FITNESS. USE AT YOUR OWN RISK.
+        </div>
         <Form
           className="user-details"
           name="basic"

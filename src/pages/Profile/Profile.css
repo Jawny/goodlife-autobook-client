@@ -3,6 +3,11 @@
   justify-content: center;
 }
 
+.warning {
+  font-weight: bold;
+  color: red;
+}
+
 .booking-form {
   text-align: center;
 }
