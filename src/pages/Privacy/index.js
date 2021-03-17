@@ -6,10 +6,10 @@ const Privacy = () => {
       <h1>Privacy Policy for Workout Auto</h1>
 
       <p>
-        At Workout Auto, accessible from https://goodlife-autobook.vercel.app/,
-        one of our main priorities is the privacy of our visitors. This Privacy
-        Policy document contains types of information that is collected and
-        recorded by Workout Auto and how we use it.
+        At Workout Auto, accessible from https://workoutauto.vercel.app/, one of
+        our main priorities is the privacy of our visitors. This Privacy Policy
+        document contains types of information that is collected and recorded by
+        Workout Auto and how we use it.
       </p>
 
       <p>

@@ -11,8 +11,7 @@ const TOS = () => {
 
       <p>
         These terms and conditions outline the rules and regulations for the use
-        of Workout Auto's Website, located at
-        https://goodlife-autobook.vercel.app/.
+        of Workout Auto's Website, located at https://workoutauto.vercel.app/.
       </p>
 
       <p>
