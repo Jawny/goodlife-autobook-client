@@ -96,6 +96,11 @@ const locations = [
     name: "Waterloo Weber and University",
     province: "ON",
   },
+  {
+    clubId: 269,
+    name: "Markham Yonge and Kirk",
+    province: "ON",
+  },
   // { clubId: 268, name: "Toronto Richmond And John", province: "ON" },
   // { clubId: 30, name: "Toronto Union Station", province: "ON" },
   // { clubId: 169, name: "Toronto King Liberty", province: "ON" },
