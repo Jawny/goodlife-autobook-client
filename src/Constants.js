@@ -136,6 +136,11 @@ const locations = [
     name: "Barrhaven Strandherd Crossing",
     province: "ON",
   },
+  {
+    clubId: 105,
+    name: "Kanata Hazeldean and Castlefrank",
+    province: "ON",
+  },
 
   // { clubId: 268, name: "Toronto Richmond And John", province: "ON" },
   // { clubId: 30, name: "Toronto Union Station", province: "ON" },
