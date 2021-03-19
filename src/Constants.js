@@ -106,6 +106,21 @@ const locations = [
     name: "Pickering Ridge",
     province: "ON",
   },
+  {
+    clubId: 256,
+    name: "Vaughan Keele and Highway 7",
+    province: "ON",
+  },
+  {
+    clubId: 179,
+    name: "Vaughan Weston and Northview",
+    province: "ON",
+  },
+  {
+    clubId: 265,
+    name: "Vaughan Metropolitian Centre",
+    province: "ON",
+  },
   // { clubId: 268, name: "Toronto Richmond And John", province: "ON" },
   // { clubId: 30, name: "Toronto Union Station", province: "ON" },
   // { clubId: 169, name: "Toronto King Liberty", province: "ON" },
