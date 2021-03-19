@@ -126,6 +126,16 @@ const locations = [
     name: "Burlington Appleby Crossing",
     province: "ON",
   },
+  {
+    clubId: 291,
+    name: "Markham Birchmount and Enterprise",
+    province: "ON",
+  },
+  {
+    clubId: 177,
+    name: "Barrhaven Strandherd Crossing",
+    province: "ON",
+  },
 
   // { clubId: 268, name: "Toronto Richmond And John", province: "ON" },
   // { clubId: 30, name: "Toronto Union Station", province: "ON" },
