@@ -137,6 +137,11 @@ const locations = [
     province: "ON",
   },
   {
+    clubId: 105,
+    name: "Kanata Hazeldean and Castlefrank",
+    province: "ON",
+  },
+  {
     clubId: 223,
     name: "Orleans Tenth Line and Charlemagne",
     province: "ON",
