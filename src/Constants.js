@@ -136,6 +136,11 @@ const locations = [
     name: "Barrhaven Strandherd Crossing",
     province: "ON",
   },
+  {
+    clubId: 223,
+    name: "Orleans Tenth Line and Charlemagne",
+    province: "ON",
+  },
 
   // { clubId: 268, name: "Toronto Richmond And John", province: "ON" },
   // { clubId: 30, name: "Toronto Union Station", province: "ON" },
