@@ -146,6 +146,11 @@ const locations = [
     name: "Orleans Tenth Line and Charlemagne",
     province: "ON",
   },
+  {
+    clubId: 154,
+    name: "Kanata Eagleson Place",
+    province: "ON",
+  },
 
   // { clubId: 268, name: "Toronto Richmond And John", province: "ON" },
   // { clubId: 30, name: "Toronto Union Station", province: "ON" },
