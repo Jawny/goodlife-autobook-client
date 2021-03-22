@@ -151,6 +151,16 @@ const locations = [
     name: "Kanata Eagleson Place",
     province: "ON",
   },
+  {
+    clubId: 11,
+    name: "Ottawa Rideau Centre",
+    province: "ON",
+  },
+  {
+    clubId: 149,
+    name: "Ottawa Queen and Bank",
+    province: "ON",
+  },
 
   // { clubId: 268, name: "Toronto Richmond And John", province: "ON" },
   // { clubId: 30, name: "Toronto Union Station", province: "ON" },
