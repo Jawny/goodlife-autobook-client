@@ -161,6 +161,11 @@ const locations = [
     name: "Ottawa Queen and Bank",
     province: "ON",
   },
+  {
+    clubId: 258,
+    name: "Ajax Rossland and Salem",
+    province: "ON",
+  },
 
   // { clubId: 268, name: "Toronto Richmond And John", province: "ON" },
   // { clubId: 30, name: "Toronto Union Station", province: "ON" },
