@@ -86,11 +86,11 @@ const Profile = () => {
     }
   };
 
-  const openUnverifiedNotification = () => {
+  const notificationMessage = (message, description) => {
     setLoading(false);
     notification.open({
-      message: "Unverified Account",
-      description: "Please check your email to verify your account.",
+      message,
+      description,
     });
   };
 
@@ -99,7 +99,10 @@ const Profile = () => {
 
     // ask user to verify email
     if (!verified) {
-      openUnverifiedNotification();
+      notificationMessage(
+        "Unverified Account",
+        "Please check your email to verify your account."
+      );
       return;
     }
     // Try to find user in the DB
