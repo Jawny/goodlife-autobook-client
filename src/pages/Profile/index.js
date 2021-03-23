@@ -1,4 +1,4 @@
-import { notification, Select, Input, Form } from "antd";
+import { AutoComplete, notification, Select, Input, Form } from "antd";
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState, useEffect, useCallback, lazy } from "react";
 import { useStripe } from "@stripe/react-stripe-js";
@@ -52,8 +52,10 @@ const Profile = () => {
 
   const handleSetClubId = useCallback(
     (e) => {
-      setClubId(e);
-      const club = locations.find((location) => location.clubId === Number(e));
+      setClubId(e.clubId);
+      const club = locations.find(
+        (location) => location.clubId === Number(e.clubId)
+      );
       setProvince(club.province);
     },
     [clubId]
@@ -195,7 +197,24 @@ const Profile = () => {
           </Form.Item>
 
           <Form.Item label="Club" name="club" rules={[{ required: true }]}>
-            <Select
+            <AutoComplete
+              className="dropdown-menus-container"
+              onSelect={(value, option) => {
+                handleSetClubId(option);
+              }}
+              options={locations.map((location) => {
+                return {
+                  label: location.name,
+                  value: location.name,
+                  clubId: location.clubId,
+                };
+              })}
+              filterOption={(inputValue, option) =>
+                option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
+                -1
+              }
+            />
+            {/* <Select
               className="dropdown-menus-container"
               onChange={handleSetClubId}
             >
@@ -206,7 +225,7 @@ const Profile = () => {
                   </Select.Option>
                 );
               })}
-            </Select>
+            </Select> */}
           </Form.Item>
 
           <Form.Item

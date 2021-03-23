@@ -31,9 +31,9 @@ const FAQ = () => {
         application.
       </div>
       <ol>
-        {questions.map((question) => {
+        {questions.map((question, index) => {
           return (
-            <li className="faq-list-container">
+            <li className="faq-list-container" key={index}>
               <div className="faq-question">{question.q}</div>
               <div className="faq-answer">{question.a}</div>
             </li>
