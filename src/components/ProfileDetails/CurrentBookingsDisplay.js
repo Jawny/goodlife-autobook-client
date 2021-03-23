@@ -11,6 +11,7 @@ const CurrentBookingDisplay = (props) => {
   const [friday, setFriday] = useState("None");
   const [saturday, setSaturday] = useState("None");
   const [sunday, setSunday] = useState("None");
+  const [club, setClub] = useState("None");
   const { userId } = props;
 
   useEffect(async () => {
