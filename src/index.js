@@ -22,10 +22,10 @@ history.listen((location) => {
 });
 
 const App = () => (
-  <BrowserRouter history={history}>
+  <BrowserRouter>
     <Auth0ProviderWithHistory>
       {/* <I18nextProvider i18n={i18n}> */}
-      <Router />
+      <Router history={history} />
       {/* </I18nextProvider> */}
     </Auth0ProviderWithHistory>
   </BrowserRouter>
