@@ -1,9 +1,12 @@
 import { lazy } from "react";
+import ReactGA from "react-ga";
 
 const MiddleBlock = lazy(() => import("../../components/MiddleBlock"));
 const Container = lazy(() => import("../../common/Container"));
 
 const Success = () => {
+  ReactGA.pageview("/success");
+
   return (
     <Container>
       <MiddleBlock
