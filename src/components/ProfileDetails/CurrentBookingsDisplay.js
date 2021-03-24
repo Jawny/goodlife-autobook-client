@@ -24,6 +24,7 @@ const CurrentBookingDisplay = (props) => {
     if (userData.goodlife) {
       const { goodlife } = userData;
       const {
+        clubId,
         province,
         monday,
         tuesday,
@@ -34,6 +35,10 @@ const CurrentBookingDisplay = (props) => {
         sunday,
       } = goodlife;
 
+      const club = Constants.locations.find(
+        (location) => location.clubId === Number(clubId)
+      );
+
       setMonday(Constants.valueToHourConvert[province][monday]);
       setTuesday(Constants.valueToHourConvert[province][tuesday]);
       setWednesday(Constants.valueToHourConvert[province][wednesday]);
@@ -41,11 +46,13 @@ const CurrentBookingDisplay = (props) => {
       setFriday(Constants.valueToHourConvert[province][friday]);
       setSaturday(Constants.valueToHourConvert[province][saturday]);
       setSunday(Constants.valueToHourConvert[province][sunday]);
+      setClub(club.name);
     }
   }, []);
 
   return (
     <div className="schedule-container">
+      <div className="schedule-item" label="Club">{`Club: ${club}`}</div>
       <div className="schedule-item" label="Monday">{`Monday: ${monday}`}</div>
       <div
         className="schedule-item"
