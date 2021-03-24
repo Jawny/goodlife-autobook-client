@@ -1,5 +1,5 @@
 import { lazy } from "react";
-
+import ReactGA from "react-ga";
 import IntroContent from "../../content/IntroContent.json";
 import MiddleBlockContent from "../../content/MiddleBlockContent.json";
 import AboutContent from "../../content/AboutContent.json";
@@ -14,6 +14,8 @@ const Container = lazy(() => import("../../common/Container"));
 const ScrollToTop = lazy(() => import("../../common/ScrollToTop"));
 
 const Home = () => {
+  ReactGA.pageview("/home");
+
   return (
     <Container>
       <ScrollToTop />
