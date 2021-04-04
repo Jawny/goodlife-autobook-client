@@ -188,11 +188,7 @@ const Profile = () => {
             name="email"
             rules={[{ required: true, message: "Email is required" }]}
           >
-            <Input
-              placeholder="Email"
-              onChange={handleGoodlifeEmail}
-              disabled
-            />
+            <Input placeholder="Email" onChange={handleGoodlifeEmail} />
           </Form.Item>
 
           <Form.Item
@@ -200,11 +196,7 @@ const Profile = () => {
             name="password"
             rules={[{ required: true, message: "Please input your password!" }]}
           >
-            <Input.Password
-              placeholder="Password"
-              onChange={handlePassword}
-              disabled
-            />
+            <Input.Password placeholder="Password" onChange={handlePassword} />
           </Form.Item>
 
           <Form.Item label="Club" name="club" rules={[{ required: true }]}>
