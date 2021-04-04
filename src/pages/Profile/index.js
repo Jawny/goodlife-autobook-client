@@ -217,7 +217,7 @@ const Profile = () => {
                 -1
               }
             />
-            <Select
+            {/* <Select
               className="dropdown-menus-container"
               onChange={handleSetClubId}
             >
@@ -228,7 +228,7 @@ const Profile = () => {
                   </Select.Option>
                 );
               })}
-            </Select>
+            </Select> */}
           </Form.Item>
 
           <Form.Item
