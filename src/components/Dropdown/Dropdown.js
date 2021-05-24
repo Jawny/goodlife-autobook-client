@@ -22,7 +22,7 @@ function Dropdown(props) {
         <Select
           key={day.dayIndex}
           style={{ width: 180 }}
-          defaultValue="None"
+          mode="multiple"
           onChange={(value) => {
             handleBookingTimes(value, day.dayIndex);
           }}

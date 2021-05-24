@@ -33,13 +33,7 @@ const Profile = () => {
 
   // indexed per day
   const [bookingTimeIntervals, setBookingTimeIntervals] = useState([
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
+    0, 0, 0, 0, 0, 0, 0,
   ]);
 
   const handleGoodlifeEmail = (e) => {
@@ -96,7 +90,6 @@ const Profile = () => {
 
   const onSubmit = async () => {
     setLoading(true);
-
     // ask user to verify email
     if (!verified) {
       notificationMessage(
@@ -188,11 +181,7 @@ const Profile = () => {
             name="email"
             rules={[{ required: true, message: "Email is required" }]}
           >
-            <Input
-              placeholder="Email"
-              onChange={handleGoodlifeEmail}
-              disabled
-            />
+            <Input placeholder="Email" onChange={handleGoodlifeEmail} />
           </Form.Item>
 
           <Form.Item
@@ -200,11 +189,7 @@ const Profile = () => {
             name="password"
             rules={[{ required: true, message: "Please input your password!" }]}
           >
-            <Input.Password
-              placeholder="Password"
-              onChange={handlePassword}
-              disabled
-            />
+            <Input.Password placeholder="Password" onChange={handlePassword} />
           </Form.Item>
 
           <Form.Item label="Club" name="club" rules={[{ required: true }]}>
