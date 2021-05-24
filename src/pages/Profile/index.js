@@ -56,7 +56,6 @@ const Profile = () => {
   );
 
   const handleBookingTimes = (value, day) => {
-    debugger;
     // console.log(value, day);
     // create a deep copy
     const bookingTimeIntervalsCopy = JSON.parse(
@@ -91,7 +90,6 @@ const Profile = () => {
 
   const onSubmit = async () => {
     setLoading(true);
-    debugger;
     // ask user to verify email
     if (!verified) {
       notificationMessage(
