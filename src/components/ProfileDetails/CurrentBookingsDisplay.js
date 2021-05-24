@@ -39,16 +39,24 @@ const CurrentBookingDisplay = (props) => {
         (location) => location.clubId === Number(clubId)
       );
 
-      setMonday(Constants.valueToHourConvert[province][monday]);
-      setTuesday(Constants.valueToHourConvert[province][tuesday]);
-      setWednesday(Constants.valueToHourConvert[province][wednesday]);
-      setThursday(Constants.valueToHourConvert[province][thursday]);
-      setFriday(Constants.valueToHourConvert[province][friday]);
-      setSaturday(Constants.valueToHourConvert[province][saturday]);
-      setSunday(Constants.valueToHourConvert[province][sunday]);
+      setMonday(getTimes(monday, province));
+      setTuesday(getTimes(tuesday, province));
+      setWednesday(getTimes(wednesday, province));
+      setThursday(getTimes(thursday, province));
+      setFriday(getTimes(friday, province));
+      setSaturday(getTimes(saturday, province));
+      setSunday(getTimes(sunday, province));
       setClub(club.name);
     }
   }, []);
+
+  const getTimes = (times, province) => {
+    if (!Array.isArray(times)) {
+      return Constants.valueToHourConvert[province][times];
+    }
+
+    return times.map((time) => Constants.valueToHourConvert[province][time]);
+  };
 
   return (
     <div className="schedule-container">
